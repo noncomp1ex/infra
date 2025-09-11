@@ -138,7 +138,14 @@
   ];
 
   services.openssh.enable = true;
-  services.nginx.enable = true;
+  services.nginx = {
+    enable = true;
+    virtualHosts."crol.bar" = {
+      locations."/" = {
+        root = "/var/www/crol.bar";
+      };
+    };
+  };
 
   networking.firewall = {
     enable = true;
