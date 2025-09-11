@@ -138,6 +138,7 @@
   ];
 
   services.openssh.enable = true;
+  services.nginx.enable = true;
 
   networking.firewall = {
     enable = true;
