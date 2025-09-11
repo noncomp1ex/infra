@@ -43,6 +43,15 @@
 
   time.timeZone = "Europe/Amsterdam";
 
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+  };
+
   users.users.crolbar = {
     isNormalUser = true;
     extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
@@ -116,6 +125,7 @@
     btop
     htop
     tmux
+    git
     (pkgs.writers.writeBashBin "up" ''
       cd /infra
       git pull --rebase
