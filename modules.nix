@@ -116,6 +116,15 @@
     btop
     htop
     tmux
+    (pkgs.writers.writeBashBin "up" ''
+      cd /infra
+      git pull --rebase
+      if [ $? -ne 0 ]; then
+        echo "pulling failed"
+        exit
+      fi
+      sudo nixos-rebuild switch --flake .#noninfra
+    '')
   ];
 
   services.openssh.enable = true;
