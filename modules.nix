@@ -129,22 +129,17 @@
     btop
     htop
     tmux
-    git
-    (pkgs.writers.writeBashBin "up" ''
-      cd /infra
-      git pull --rebase
-      if [ $? -ne 0 ]; then
-        echo "pulling failed"
-        exit
-      fi
-      sudo nixos-rebuild switch --flake .#noninfra
-    '')
   ];
 
   services.openssh = {
     enable = true;
-    settings.PermitRootLogin = "yes";
+    settings = {
+      PasswordAuthentication = false;
+    };
   };
+
+  security.sudo.wheelNeedsPassword = false;
+
   services.nginx = {
     enable = true;
     virtualHosts."crol.bar" = {
