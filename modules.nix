@@ -141,7 +141,10 @@
     '')
   ];
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings.PermitRootLogin = "yes";
+  };
   services.nginx = {
     enable = true;
     virtualHosts."crol.bar" = {
