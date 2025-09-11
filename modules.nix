@@ -65,6 +65,10 @@
     shell = pkgs.zsh;
   };
 
+  users.users.root = {
+    hashedPassword = "$y$j9T$vRxv3vPo5oX1UuiSmJF5V/$MzK8chBLfjKPtHJ1OiMOBAXe.i/ykFvclahtkUWUh8B";
+  };
+
   programs.zsh = {
     enable = true;
 
