@@ -49,6 +49,8 @@
         "nix-command"
         "flakes"
       ];
+
+      trusted-users = ["crolbar"];
     };
   };
 
@@ -122,9 +124,13 @@
   };
 
   programs.yazi.enable = true;
+  programs.starship.enable = true;
+  programs.git.enable = true;
+  programs.lazygit.enable = true;
 
   environment.systemPackages = with pkgs; [
     vim
+    neovim
     wget
     btop
     htop
