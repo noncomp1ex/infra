@@ -154,19 +154,41 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  services.nginx = {
+  # services.nginx = {
+  #   enable = true;
+  #   virtualHosts."crol.bar" = {
+  #     locations."/" = {
+  #       root = "/var/www/crol.bar";
+  #     };
+  #   };
+  # };
+
+  services.caddy = {
     enable = true;
-    virtualHosts."crol.bar" = {
-      locations."/" = {
-        root = "/var/www/crol.bar";
+    virtualHosts = {
+      "crol.bar" = {
+        extraConfig = ''
+          root * /var/www/html
+          file_server
+
+          handle /api/* {
+            reverse_proxy localhost:8081
+          }
+        '';
       };
     };
   };
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [22 80 443];
-    allowedUDPPorts = [];
+    allowedTCPPorts = [22 80 443 3478];
+    allowedUDPPorts = [3478 5349];
+    allowedUDPPortRanges = [
+      {
+        from = 50000;
+        to = 51000;
+      }
+    ];
   };
 
   fileSystems."/" = {
