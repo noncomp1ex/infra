@@ -116,6 +116,14 @@
       zstyle ':completion:*:descriptions' format "%F{yellow}[-- %d --]%f"
     '';
 
+    shellAliases = let
+      zsh = lib.getExe pkgs.zsh;
+    in {
+      ns = "nix-shell --command \"bash -c \\\"SHELL=${zsh} && ${zsh}\\\"\"";
+      nd = "nix develop --command bash -c \"SHELL=${zsh} && \"${zsh}\"\"";
+      t = "tmux";
+    };
+
     syntaxHighlighting = {
       enable = true;
       patterns = {"rm -rf *" = "fg=black,bg=red";};
