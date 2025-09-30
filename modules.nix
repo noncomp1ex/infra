@@ -192,12 +192,12 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/7fd05c41-8de3-43b5-95fe-f0b87fc0afd5";
+    device = "/dev/disk/by-uuid/695c644f-5337-4f12-bb02-b01055d409e3";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/e825561a-d89d-434a-9b01-f9417c794c23";
+    device = "/dev/disk/by-uuid/ce66d2cf-9693-49b8-a631-a904d66d3235";
     fsType = "ext4";
   };
 }
