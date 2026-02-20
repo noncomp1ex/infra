@@ -9,7 +9,7 @@
   boot = {
     loader.grub = {
       enable = true;
-      device = "/dev/sda";
+      device = "nodev";
     };
 
     initrd = {
@@ -192,12 +192,12 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/695c644f-5337-4f12-bb02-b01055d409e3";
+    device = "/dev/disk/by-label/root";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/ce66d2cf-9693-49b8-a631-a904d66d3235";
+    device = "/dev/disk/by-label/boot";
     fsType = "ext4";
   };
 }
