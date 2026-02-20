@@ -8,8 +8,11 @@
 
   boot = {
     loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        efiSupport = false;
+        device = "/dev/sda";
+      };
     };
 
     initrd = {
@@ -192,12 +195,12 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/root";
+    device = "/dev/disk/by-label/ROOT";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-label/boot";
-    fsType = "vfat";
+    device = "/dev/disk/by-label/BOOT";
+    fsType = "ext4";
   };
 }
