@@ -7,9 +7,9 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   boot = {
-    loader.grub = {
-      enable = true;
-      device = "/dev/sda";
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
     };
 
     initrd = {

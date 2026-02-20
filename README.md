@@ -11,13 +11,13 @@ vda    253:0    0   20G  0 disk
 ## format dos
 
 ```
-sudo mkfs.ext4 /dev/vda1
+sudo mkfs.fat -F32 /dev/vda1
 sudo mkfs.ext4 /dev/vda2
 ```
 
 ## label (formatting removes labels)
 ```
-sudo e2label /dev/vda1 boot
+sudo fatlabel /dev/vda1 boot
 sudo e2label /dev/vda2 root
 ```
 
