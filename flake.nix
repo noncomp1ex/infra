@@ -27,7 +27,7 @@
             exit
           fi
 
-          nix-copy-closure --to ${remote} ./result
+          nix-copy-closure --to crolbar@${remote} ./result
 
           if [ $? -ne 0 ]; then
             echo "system copy falied"
@@ -36,7 +36,7 @@
 
           system=$(readlink ./result)
 
-          ssh crol.bar " \
+          ssh crolbar@${remote} " \
           sudo nix-env --profile /nix/var/nix/profiles/system --set $system && \
           sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch"
         '';
