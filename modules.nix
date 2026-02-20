@@ -147,6 +147,8 @@
     btop
     htop
     tmux
+
+    # mcrcon
   ];
 
   services.openssh = {
@@ -182,10 +184,46 @@
   #   };
   # };
 
+  nixpkgs.config.allowUnfree = true;
+
+  services.teamspeak3.enable = true;
+
+  # services.minecraft-server = {
+  #   enable = true;
+  #   eula = true;
+
+  #   declarative = true;
+  #   serverProperties = {
+  #     "online-mode" = false;
+
+  #     enable-rcon = true;
+  #     "rcon.password" = "1234";
+  #     "rcon.port" = 25575;
+  #   };
+  # };
+
+  # services.terraria = {
+  #   enable = true;
+  # };
+
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [22 80 443 3478 9000];
-    allowedUDPPorts = [3478 5349];
+    allowedTCPPorts = [
+      22
+      80
+      443
+      3478
+      9000
+
+      # 7777 # terraria
+      # 25565 # mc
+    ];
+    allowedUDPPorts = [
+      3478
+      5349
+      9987 # teamspeak
+      # 7777
+    ];
     allowedUDPPortRanges = [
       {
         from = 50000;

@@ -1,19 +1,11 @@
 # Install vm
 
-## partition (gpt)
+## partition (dos)
+- set boot flag on 500M part
 ```
 vda    253:0    0   20G  0 disk
 ├─vda1 253:1    0  500M  0 part
 └─vda2 253:2    0 19.5G  0 part
-```
-
-### set boot flag (gpt)
-```
-sudo fdisk /dev/vda
-t
-1
-1
-w
 ```
 
 - check with `sudo parted /dev/sda print`
@@ -21,14 +13,14 @@ w
 ## format
 
 ```
-sudo mkfs.fat -F32 /dev/vda1
+sudo mkfs.ext4 /dev/vda1
 sudo mkfs.ext4 /dev/vda2
 ```
 
 ## label (formatting removes labels)
 ```
-sudo fatlabel /dev/vda1 boot
-sudo e2label /dev/vda2 root
+sudo e2label /dev/vda1 BOOT
+sudo e2label /dev/vda2 ROOT
 ```
 
 ## mount
