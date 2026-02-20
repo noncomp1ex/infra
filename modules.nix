@@ -9,7 +9,7 @@
   boot = {
     loader.grub = {
       enable = true;
-      device = "nodev";
+      device = "/dev/vda";
     };
 
     initrd = {
@@ -138,7 +138,7 @@
 
   environment.systemPackages = with pkgs; [
     vim
-    neovim
+    # neovim
     wget
     btop
     htop
@@ -163,21 +163,20 @@
   #   };
   # };
 
-  services.caddy = {
-    enable = true;
-    virtualHosts = {
-      "crol.bar" = {
-        extraConfig = ''
-          root * /var/www/html
-          file_server
-
-          handle /api/* {
-            reverse_proxy localhost:8081
-          }
-        '';
-      };
-    };
-  };
+  # services.caddy = {
+  #   enable = true;
+  #   virtualHosts = {
+  #     "crol.bar" = {
+  #       extraConfig = ''
+  #         root * /var/www/html
+  #         file_server
+  #         handle /api/* {
+  #           reverse_proxy localhost:8081
+  #         }
+  #       '';
+  #     };
+  #   };
+  # };
 
   networking.firewall = {
     enable = true;
