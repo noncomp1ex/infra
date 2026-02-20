@@ -1,14 +1,24 @@
 # Install vm
 
-## partition
-
+## partition (gpt)
 ```
 vda    253:0    0   20G  0 disk
 ├─vda1 253:1    0  500M  0 part
 └─vda2 253:2    0 19.5G  0 part
 ```
 
-## format dos
+### set boot flag (gpt)
+```
+sudo fdisk /dev/vda
+t
+1
+1
+w
+```
+
+- check with `sudo parted /dev/sda print`
+
+## format
 
 ```
 sudo mkfs.fat -F32 /dev/vda1
