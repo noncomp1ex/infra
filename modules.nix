@@ -179,20 +179,24 @@
   #   };
   # };
 
-  # services.caddy = {
-  #   enable = true;
-  #   virtualHosts = {
-  #     "crol.bar" = {
-  #       extraConfig = ''
-  #         root * /var/www/html
-  #         file_server
-  #         handle /api/* {
-  #           reverse_proxy localhost:8081
-  #         }
-  #       '';
-  #     };
-  #   };
-  # };
+  services.caddy = {
+    enable = true;
+    virtualHosts = {
+      # "crol.bar" = {
+      #   extraConfig = ''
+      #     root * /var/www/html
+      #     file_server
+      #     handle /api/* {
+      #       reverse_proxy localhost:8081
+      #     }
+      #   '';
+      # };
+
+      "sinus.crol.bar".extraConfig = ''
+        reverse_proxy localhost:8087
+      '';
+    };
+  };
 
   services.teamspeak3 = {
     enable = true;
