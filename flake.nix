@@ -20,7 +20,7 @@
         remote = "crol.bar";
 
         deploy = pkgs.writers.writeBashBin "deploy" ''
-          nixos-rebuild --flake .#noninfra build
+          nix build .#nixosConfigurations.noninfra.config.system.build.toplevel
 
           if [ $? -ne 0 ]; then
             echo "system build falied"
