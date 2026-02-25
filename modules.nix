@@ -148,7 +148,8 @@
   programs.lazygit.enable = true;
 
   virtualisation.docker.enable = true;
-  services.tailscale.enable = true;
+
+  # services.tailscale.enable = true;
 
   environment.systemPackages = with pkgs; [
     vim
