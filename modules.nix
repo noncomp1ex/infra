@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }: {
   system.stateVersion = "25.05";
@@ -147,9 +148,87 @@
   programs.git.enable = true;
   programs.lazygit.enable = true;
 
-  virtualisation.docker.enable = true;
+  virtualisation = {
+    docker.enable = true;
+    oci-containers.containers = {
+      "test" = let
+        imageName = "testd";
+        imageTag = "latest";
+      in {
+        serviceName = "testD";
 
-  # services.tailscale.enable = true;
+        image = "${imageName}:${imageTag}";
+        imageFile = let
+          # prefetch with `nix run nixpkgs#nix-prefetch-docker -- sinusbot/docker`
+          sinusbotImage = pkgs.dockerTools.pullImage {
+            imageName = "sinusbot/docker";
+            imageDigest = "sha256:8f9c770d974153c290650b8d3057a79cd47f8d1a2662c2c62a3164f2844f0cd4";
+            hash = "sha256-8FUOBIQTT7UL2lzSJIoaPW0HzhEgLAuc4uysrbWrBr8=";
+            finalImageName = "sinusbot/docker";
+            finalImageTag = "latest";
+          };
+
+          pyEnv = pkgs.python313.withPackages (ps: []);
+
+          new_pkgs = import inputs.nixpkgs_new {system = "x86_64-linux";};
+
+          yt-dlp = pkgs.writers.writeBash "myapp" ''
+            #!/usr/bin/env bash
+
+            filtered=()
+
+            for arg in "$@"; do
+              if [[ "$arg" != "--no-call-home" || "$arg" != "-J" ]]; then
+                filtered+=("$arg")
+              fi
+            done
+
+            echo "''${filtered[@]}" >> /opt/sinusbot/out.t
+
+            exec ${new_pkgs.yt-dlp}/bin/yt-dlp --proxy socks5h://127.0.0.1:1080 -o /opt/sinusbot/music "''${filtered[@]}"
+          '';
+        in
+          pkgs.dockerTools.buildImage {
+            name = imageName;
+            tag = imageTag;
+            fromImage = sinusbotImage;
+
+            copyToRoot = pkgs.buildEnv {
+              name = "image-root";
+              paths = [pyEnv];
+            };
+
+            extraCommands = ''
+              mkdir -p usr/local/bin
+              ln -s ${yt-dlp} usr/local/bin/yt-dlp
+            '';
+
+            config = {
+              Env = [
+                "PATH=${pyEnv}/bin:/bin:/usr/bin"
+                "CONDA_DEFAULT_ENV=py313"
+              ];
+              Entrypoint = ["/opt/sinusbot/entrypoint.sh"];
+              WorkingDir = "/opt/sinusbot";
+            };
+          };
+
+        ports = ["8087:8087"];
+        volumes = [
+          "/home/sinusbot/scripts:/opt/sinusbot/scripts"
+          "/home/sinusbot/data:/opt/sinusbot/data"
+          "/home/crolbar/music:/opt/sinusbot/music"
+        ];
+        environment = {
+          UID = "1001";
+          GID = "100";
+        };
+        extraOptions = ["--network=host"];
+      };
+    };
+  };
+
+  services.tailscale.enable = true;
 
   environment.systemPackages = with pkgs; [
     vim
@@ -230,6 +309,7 @@
       443
       3478
       9000
+      30033 # ts file transfer
 
       # 7777 # terraria
       # 25565 # mc
